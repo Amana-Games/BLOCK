@@ -79,15 +79,18 @@
 		},
 		"win": {
 			"artifactName": "BLOCK_Windows.${ext}",
+			"icon": "icon.ico",
 			"target": [
 				"zip"
 			]
 		},
 		"linux": {
 			"artifactName": "BLOCK_Linux.${ext}",
+			"icon": "icon.png",
+			"category": "Graphics",
 			"target": [
 				"zip",
-				"appImage"
+				"AppImage"
 			]
 		},
 		"fileAssociations": [
