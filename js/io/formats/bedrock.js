@@ -419,8 +419,11 @@ window.BedrockEntityManager = class BedrockEntityManager {
 				}
 				if (!tryItWith('png') && !tryItWith('tga')) {
 					if (settings.default_path && settings.default_path.value) {
-						
-						texture_path = settings.default_path.value + osfs + 'entity' + osfs + path.split('/').join(osfs)
+						let base_path = settings.default_path.value;
+						if (fs.existsSync(base_path + osfs + 'textures')) {
+							base_path = base_path + osfs + 'textures';
+						}
+						texture_path = base_path + osfs + 'entity' + osfs + path.split('/').join(osfs)
 						tryItWith('png', true) || tryItWith('tga', true)
 					}
 				}

@@ -93,7 +93,7 @@ function createWindow(second_instance, options = {}) {
 
 		let template = [
 			{
-				"label": "Blockbench",
+				"label": "BLOCK",
 				"submenu": [
 					{
 						"role": "hide"
@@ -158,6 +158,7 @@ function createWindow(second_instance, options = {}) {
 		Menu.setApplicationMenu(osxMenu)
 	} else {
 		win.setMenu(null);
+		win.setTitle("BLOCK");
 	}
 	
 	if (options.maximize !== false) win.maximize()
@@ -290,14 +291,14 @@ app.on('ready', () => {
 		}
 
 		if (app_was_loaded) {
-			console.log('[Blockbench] App reloaded or new window opened')
+			console.log('[DME] App reloaded or new window opened')
 			return;
 		}
 
 		app_was_loaded = true;
 		if (dev_mode) {
 
-			console.log('[Blockbench] App launched in development mode')
+			console.log('[DME] App launched in development mode')
 	
 		} else {
 	

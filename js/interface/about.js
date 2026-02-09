@@ -11,27 +11,6 @@ BARS.defineActions(() => {
 				isApp,
 				version_label: Blockbench.version
 			};
-			jQuery.ajax({
-				url: 'https://api.github.com/repos/JannisX11/blockbench/releases/latest',
-				cache: false,
-				type: 'GET',
-				success(release) {
-					let releaseVersion = release.tag_name.replace(/^v/, '');
-					let display_version = VersionUtil.format(Blockbench.version);
-					switch (VersionUtil.compare(Blockbench.version, releaseVersion)) {
-						case 1:
-							data.version_label = `${display_version} (Pre-release)`;
-							break;
-						case 0:
-							data.version_label = `${display_version} (${tl('about.version.up_to_date')}😄)`;
-							break;
-						case -1:
-							data.version_label = `${display_version} (${tl('about.version.update_available', [releaseVersion])})`;
-							break;
-					}
-				},
-				error(err) {}
-			})
 
 			new Dialog({
 				id: 'about',
@@ -46,50 +25,27 @@ BARS.defineActions(() => {
 				buttons: [],
 				component: {
 					data() {return data},
+					methods: {tl},
 					template: `
 						<div>
-							<div class="blockbench_logo" id="about_page_title">
-								<img src="assets/logo_text_white.svg" alt="Blockbench" width="340px">
+							<div class="blockbench_logo" id="about_page_title" style="text-align: center; padding-bottom: 20px;">
+								<h1 style="font-size: 3em; margin-bottom: 0;">BLOCK</h1>
+								<p style="font-size: 1.2em; color: var(--color-subtle_text); margin-top: 0;">based on Blockbench</p>
+								<img src="favicon.png" alt="DME" width="64px" style="margin-top: 10px;">
 							</div>
-							<p>Version <span>{{ version_label }}</span></p>
+							<p style="text-align: center; font-weight: bold;">Version <span>{{ version_label }}</span></p>
 
-							<div class="socials">
-								<a class="open-in-browser" href="https://blockbench.net">
-									<i class="icon icon-blockbench_inverted" style="transform: scale(1.3);"></i>
-									<label>Website</label>
-								</a>
-								<a class="open-in-browser" href="https://bsky.app/profile/blockbench.net">
-									<i class="icon fab fa-bluesky" style="color: #208bfe;"></i>
-									<label>Bluesky</label>
-								</a>
-								<a class="open-in-browser" href="https://twitter.com/blockbench">
-									<i class="icon fab fa-twitter" style="color: #1ea6ff;"></i>
-									<label>Twitter</label>
-								</a>
-								<a class="open-in-browser" href="http://discord.blockbench.net">
-									<i class="icon fab fa-discord" style="color: #5865F2;"></i>
-									<label>Discord</label>
-								</a>
-								<a class="open-in-browser" href="https://youtube.com/Blockbench3D">
-									<i class="icon fab fa-youtube"></i>
-									<label>YouTube</label>
-								</a>
-								<a class="open-in-browser" href="https://github.com/JannisX11/blockbench">
-									<i class="icon fab fa-github" style="color: #dddddd;"></i>
-									<label>GitHub</label>
-								</a>
-								<a class="open-in-browser" href="https://blockbench.net/wiki">
-								<i class="icon material-icons">menu_book</i>
-									<label>Wiki</label>
-								</a>
+							<div style="text-align: center; margin: 20px 0; padding: 15px; background: var(--color-back); border-radius: 8px; border: 1px solid var(--color-border);">
+								<h3 style="margin: 0; color: var(--color-accent);">BLOCK - by Amana Games</h3>
+								<p style="margin-top: 5px; font-size: 0.9em; opacity: 0.8;">Ainimonia Team: Turk0w & Atlas</p>
 							</div>
 
-							<p>Created by Jannis Petersen</p>
-							<p style="color: var(--color-subtle_text);">A free and open-source low-poly model editor. To make 3D art easy and accessible for everyone.
+							<p style="font-size: 0.8em; margin-top: 20px;">Created by Jannis Petersen</p>
+							<p style="color: var(--color-subtle_text); font-size: 0.75em;">A free and open-source low-poly model editor. To make 3D art easy and accessible for everyone.
 								For all who enjoy stylized 3D art. For game developers, students, content creators, and for the Minecraft community.</p>
 
-							<h4>SPECIAL THANKS TO</h4>
-							<ul class="multi_column_list special_thanks_mentions">
+							<h4 style="font-size: 0.9em; margin-top: 24px;">SPECIAL THANKS TO</h4>
+							<ul class="multi_column_list special_thanks_mentions" style="font-size: 0.75em;">
 								<li>Mojang Studios</li>
 								<li>All contributors</li>
 								<li>The community moderators</li>
@@ -102,11 +58,11 @@ BARS.defineActions(() => {
 								<li>The Blockbench Community</li>
 							</ul>
 
-							<h4>FRAMEWORKS, LIBRARIES, AND ICONS</h4>
+							<h4 style="font-size: 0.8em; margin-top: 24px;">FRAMEWORKS, LIBRARIES, AND ICONS</h4>
 
-							<p style="margin-bottom: 16px" v-if="isApp">This program is powered by <a class="open-in-browser" href="https://electronjs.org">Electron</a></p>
+							<p style="margin-bottom: 12px; font-size: 0.7em;" v-if="isApp">This program is powered by <a class="open-in-browser" href="https://electronjs.org">Electron</a></p>
 
-							<ul class="multi_column_list">
+							<ul class="multi_column_list" style="font-size: 0.65em;">
 								<li><a class="open-in-browser" href="https://material.io/icons/">Material Icons</a></li>
 								<li><a class="open-in-browser" href="https://fontawesome.com/icons/">Font Awesome</a></li>
 								<li><a class="open-in-browser" href="https://github.com/microsoft/vscode-codicons">VSCode Codicons</a></li>

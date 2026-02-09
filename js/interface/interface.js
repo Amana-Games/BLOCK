@@ -647,7 +647,7 @@ export function resizeWindow(event) {
 }
 
 export function setProjectTitle(title) {
-	let window_title = 'Blockbench';
+	let window_title = 'BLOCK';
 	if (title == undefined && Project.name) {
 		title = Project.name
 	}
@@ -661,7 +661,7 @@ export function setProjectTitle(title) {
 				title = title.replace(/^geometry\./,'').replace(/:[a-z0-9.]+/, '')
 			}
 		}
-		window_title = title+' - Blockbench';
+		window_title = title+' - BLOCK';
 	} else {
 		Prop.file_name = Prop.file_name_alt = ''
 	}

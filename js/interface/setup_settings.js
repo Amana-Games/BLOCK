@@ -250,11 +250,11 @@ function setupSettings() {
 	new Setting('create_rename', 					{category: 'defaults', value: false});
 	new Setting('show_only_selected_uv', 			{category: 'defaults', value: false});
 	new Setting('default_path', 					{category: 'defaults', value: false, type: 'click', condition: isApp, icon: 'burst_mode', click: function() { openDefaultTexturePath() }});
-	new Setting('default_bedrock_format',			{category: 'defaults', type: 'select', value: 'entity', options: {
+	new Setting('default_bedrock_format',			{category: 'defaults', condition: false, type: 'select', value: 'entity', options: {
 		entity: 'format.bedrock',
 		block: 'format.bedrock_block',
 	}});
-	new Setting('default_java_block_version',		{category: 'defaults', type: 'select', value: 'latest', options: {
+	new Setting('default_java_block_version',		{category: 'defaults', condition: false, type: 'select', value: 'latest', options: {
 		latest: 'Latest',
 		'1.21.6': '1.21.6 - 1.21.10',
 		'1.9.0': '1.9 - 1.21.5',
@@ -279,8 +279,6 @@ function setupSettings() {
 	new Setting('recent_projects', {category: 'application', value: 32, max: 256, min: 0, type: 'number', condition: isApp});
 	new Setting('backup_interval', {category: 'application', value: 10, type: 'number', min: 0, condition: isApp});
 	new Setting('backup_retain', {category: 'application', value: 30, type: 'number', min: 0, condition: isApp});
-	new Setting('automatic_updates', {category: 'application', value: true, condition: isApp});
-	new Setting('update_to_prereleases', {category: 'application', value: false, condition: isApp, launch_setting: true});
 	new Setting('hardware_acceleration', {category: 'application', value: true, requires_restart: true, condition: isApp, launch_setting: true});
 	
 	//Export
@@ -302,7 +300,7 @@ function setupSettings() {
 	new Setting('export_empty_groups',	{category: 'export', value: true});
 	new Setting('export_groups', 		{category: 'export', value: true});
 	new Setting('java_export_pivots', 	{category: 'export', value: true});
-	new Setting('optifine_save_default_texture',{category: 'export', value: true});
+	new Setting('optifine_save_default_texture',{category: 'export', condition: false, value: true});
 	new Setting('obj_face_export_mode',	{category: 'export', value: 'both', type: 'select', options: {
 		both: tl('settings.obj_face_export_mode.both'),
 		tris: tl('settings.obj_face_export_mode.tris'),

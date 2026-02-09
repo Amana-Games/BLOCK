@@ -660,11 +660,15 @@ export class Texture {
 	}
 	fromDefaultPack() {
 		if (isApp && settings.default_path && settings.default_path.value) {
+			let base_path = settings.default_path.value;
+			if (fs.existsSync(base_path + osfs + 'textures')) {
+				base_path = base_path + osfs + 'textures';
+			}
 			if (Project.BedrockEntityManager) {
 				var path = Project.BedrockEntityManager.findEntityTexture(Project.geometry_name, 'raw')
 				if (path) {
 					this.isDefault = true;
-					path = settings.default_path.value + osfs + path
+					path = base_path + osfs + path
 
 					if (fs.existsSync(path + '.png')) {
 						this.fromPath(path + '.png')
@@ -680,7 +684,7 @@ export class Texture {
 				}
 			} else if (this.name && this.name.includes('.')) {
 				var folder = this.folder.replace(/\//g, osfs);
-				var path = settings.default_path.value + osfs + (folder ? (folder+osfs) : '') + this.name
+				var path = base_path + osfs + (folder ? (folder+osfs) : '') + this.name
 				if (fs.existsSync(path)) {
 					this.isDefault = true;
 					this.fromPath(path)

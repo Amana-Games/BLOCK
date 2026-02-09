@@ -1,0 +1,62 @@
+name: BLOCK CI
+on:
+  push:
+    tags:
+      - '**' # Dispara apenas para TAGS
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Source
+        run: npm run build-electron
+
+      - name: Package Application
+        run: npx electron-builder --${{ matrix.os == 'windows-latest' && 'win' || 'linux' }}
+        env:
+          CSC_SKIP_SIGNING: true # Pula a assinatura do Windows
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: block-binaries-${{ matrix.os }}
+          path: dist-electron/*.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./release-files
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # Busca todos os zips dentro das subpastas baixadas
+          files: ./release-files/**/*.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

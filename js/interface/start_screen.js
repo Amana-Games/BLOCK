@@ -292,6 +292,7 @@ onVueSetup(async function() {
 				let categories = {};
 				function add(key, format) {
 					
+					if (format.category !== 'general') return;
 					if (!categories[format.category]) {
 						categories[format.category] = {
 							name: tl('format_category.' + format.category),
@@ -379,22 +380,26 @@ onVueSetup(async function() {
 		template: `
 			<div id="start_screen">
 				<content>
-					<section id="splash_screen" v-if="show_splash_screen" class="start_screen_section" section_id="splash_screen">
-						<div class="splash_art_slideshow_image" :style="{backgroundImage: getBackground(slideshow[slideshow_selected].source)}">
-							<p v-if="slideshow[slideshow_selected].description" class="start_screen_graphic_description" v-html="pureMarked(slideshow[slideshow_selected].description)"></p>
+					<section id="splash_screen" v-if="show_splash_screen" class="start_screen_section" section_id="splash_screen" style="aspect-ratio: auto; height: auto; padding: 40px 0; background: var(--color-back); display: flex; align-items: center; justify-content: center; flex-direction: column; border-bottom: 2px solid var(--color-border);">
+						<h1 style="font-size: 2.2em; font-weight: 800; color: var(--color-light); margin-bottom: 20px;">Welcome back</h1>
+						
+						<img src="favicon.png" alt="DME" width="154px" style="margin-bottom: 20px; filter: drop-shadow(0 0 20px rgba(0,0,0,0.5));">
+						
+						<h1 style="font-size: 3.2em; font-weight: 800; color: var(--color-light); margin-bottom: 30px;">BLOCK</h1>
+
+						<div class="start_screen_meta" style="text-align: center; color: var(--color-subtle_text); font-size: 0.9em; line-height: 1.6;">
+							<p>Version 5.0.7</p>
+							<p>Build v2026.2-BLOCK-Win64</p>
+							<p>BLOCK - Amana Games</p>
 						</div>
-						<div class="splash_art_slideshow_image slideshow_previous" v-if="typeof slideshow_last == 'number'" :style="{backgroundImage: getBackground(slideshow[slideshow_last].source)}">
-						</div>
-						<ul class="splash_art_slideshow_points">
-							<li v-for="(image, index) in slideshow" :key="index" :class="{selected: index == slideshow_selected}" @click="setSlide(index)"></li>
-						</ul>
-						<i class="material-icons start_screen_close_button" @click="show_splash_screen = false">clear</i>
+
+						<i class="material-icons start_screen_close_button" style="top: 15px; right: 15px;" @click="show_splash_screen = false">clear</i>
 					</section>
 
 					<section id="start_files" class="start_screen_section" section_id="start_files">
 
 						<div class="start_screen_left" v-if="!(selected_format_id && mobile_layout)">
-							<h2>${tl('mode.start.new')}</h2>
+							<h2>New model</h2>
 							<ul>
 								<li v-for="(category, key) in getFormatCategories()" class="format_category" :key="key">
 									<label>{{ category.name }}</label>
@@ -422,7 +427,7 @@ onVueSetup(async function() {
 										</li>
 										<li class="format_entry start_screen_link" @click="openLink('https://blockbench.net/wiki')">
 											<span class="icon_wrapper f_left"><i class="material-icons">menu_book</i></span>
-											<label>Blockbench Wiki</label>
+											<label>DME Wiki</label>
 										</li>
 									</ul>
 								</li>
@@ -471,7 +476,7 @@ onVueSetup(async function() {
 						</div>
 
 						<div class="start_screen_right" v-else>
-							<h2 v-if="isApp">${tl('mode.start.recent')}</h2>
+							<h2 v-if="isApp">Keep working</h2>
 							<div id="start_screen_view_menu" v-if="isApp && !redact_names">
 								<search-bar :hide="true" v-model="search_term"></search-bar>
 								<li class="tool" v-bind:class="{selected: list_type == 'grid'}" v-on:click="setListType('grid')">
@@ -576,50 +581,6 @@ ModelLoader.loaders = {};
 	});
 	documentReady.then(() => {
 
-		//Bluesky
-		let bsky_ad;
-		Blockbench.onUpdateTo('4.12.2', () => {
-			//Bluesky
-			if (!settings.classroom_mode.value) {
-				bsky_ad = true;
-				addStartScreenSection('bluesky_link', {
-					color: 'rgb(32, 139, 254);',
-					text_color: '#ffffff',
-					graphic: {type: 'icon', icon: 'fab.fa-bluesky'},
-					text: [
-						{type: 'h3', text: 'Blockbench on Bluesky'},
-						{text: 'Follow Blockbench on Bluesky for the latest news & cool models from the community! [@blockbench.net](https://bsky.app/profile/blockbench.net)'}
-					],
-					last: true
-				})
-			}
-		})
-		if (!settings.classroom_mode.value && !bsky_ad && Blockbench.startup_count < 20 && Blockbench.startup_count % 5 === 4) {
-			bsky_ad = true;
-			addStartScreenSection('bluesky_link', {
-				color: 'rgb(32, 139, 254);',
-				text_color: '#ffffff',
-				graphic: {type: 'icon', icon: 'fab.fa-bluesky'},
-				text: [
-					{type: 'h3', text: 'Blockbench on Bluesky'},
-					{text: 'Follow Blockbench on Bluesky for the latest news & cool models from the community! [@blockbench.net](https://bsky.app/profile/blockbench.net)'}
-				],
-				last: true
-			})
-		}
-		//Discord
-		if (!settings.classroom_mode.value && Blockbench.startup_count < 6 && !bsky_ad) {
-			addStartScreenSection('discord_link', {
-				color: '#5865F2',
-				text_color: '#ffffff',
-				graphic: {type: 'icon', icon: 'fab.fa-discord'},
-				text: [
-					{type: 'h2', text: 'Discord Server'},
-					{text: 'You need help with modeling or you want to chat about Blockbench? Join the official [Blockbench Discord](https://discord.gg/WVHg5kH)!'}
-				],
-				last: true
-			})
-		}
 
 		// Quick Setup
 		if (Blockbench.startup_count <= 1) {
@@ -714,18 +675,6 @@ ModelLoader.loaders = {};
 		if (!data || !data[0]) return;
 		data = data[0];
 
-		//Update Screen
-		if (Blockbench.hasFlag('after_update') && data.new_version) {
-			data.new_version.insert_after = 'splash_screen'
-			addStartScreenSection('new_version', data.new_version);
-			jQuery.ajax({
-				url: 'https://blckbn.ch/api/event/successful_update',
-				type: 'POST',
-				data: {
-					version: Blockbench.version
-				}
-			})
-		}
 		if (data.psa) {
 			(function() {
 				if (typeof data.psa.version == 'string') {
